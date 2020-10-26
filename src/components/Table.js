@@ -8,9 +8,7 @@ function Table({ countries }) {
         <React.Fragment>
           <tr>
             <td>{country}</td>
-            <tr>
-              <strong>{cases}</strong>
-            </tr>
+            <tr style={{ fontWeight: 'bold' }}>{cases}</tr>
           </tr>
         </React.Fragment>
       ))}
