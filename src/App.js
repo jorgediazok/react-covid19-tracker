@@ -10,6 +10,7 @@ import {
 import InfoBox from './components/InfoBox';
 import Table from './components/Table';
 import Map from './components/Map';
+import LineGraph from './components/LineGraph';
 import { sortData } from './util';
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    fetch('https://disease.sh/v3/covid-19/all')
+    fetch('https://disease.sh/v3/covid-19/all?yesterday=true')
       .then((response) => response.json())
       .then((data) => {
         setCountryInfo(data);
@@ -106,6 +107,7 @@ function App() {
           <h3>Live Cases by Country</h3>
           <Table countries={tableData} />
           <h3>World Wide New Cases</h3>
+          <LineGraph />
         </CardContent>
       </Card>
     </div>
