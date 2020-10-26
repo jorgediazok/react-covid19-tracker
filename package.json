@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "chart.js": "^2.9.4",
     "firebase": "^7.24.0",
+    "leaflet": "^1.7.1",
     "numeral": "^2.0.6",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.10.0",
