@@ -11,6 +11,7 @@ import InfoBox from './components/InfoBox';
 import Table from './components/Table';
 import Map from './components/Map';
 import LineGraph from './components/LineGraph';
+import 'leaflet/dist/leaflet.css';
 import { sortData } from './util';
 
 function App() {

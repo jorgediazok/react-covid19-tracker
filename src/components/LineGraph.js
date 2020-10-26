@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import numeral from 'numeral';
@@ -64,7 +65,7 @@ const buildChartData = (data, casesType) => {
   return chartData;
 };
 
-function LineGraph() {
+function LineGraph({ casesType = 'cases' }) {
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -79,13 +80,12 @@ function LineGraph() {
         });
     };
     fetchData();
-  }, []);
+  }, [casesType]);
 
   return (
     <div className="lineGraph">
       <h1>I am a Graph</h1>
       {data?.length > 0 && (
-        // @ts-ignore
         <Line
           options={options}
           data={{
