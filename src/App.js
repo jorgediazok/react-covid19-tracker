@@ -49,7 +49,7 @@ function App() {
     const url =
       countryCode === 'worldwide'
         ? 'https://disease.sh/v3/covid-19/all'
-        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}?yesterday=true&strict=true`;
 
     await fetch(url)
       .then((response) => response.json())
