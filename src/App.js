@@ -13,6 +13,7 @@ import Map from './components/Map';
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState(['worldwide']);
+  const [countryInfo, setCountryInfo] = useState({});
 
   useEffect(() => {
     const getCountriesData = async () => {
@@ -29,10 +30,23 @@ function App() {
     getCountriesData();
   }, []);
 
-  const onCountryChange = (e) => {
+  const onCountryChange = async (e) => {
     const countryCode = e.target.value;
-    setCountry(countryCode);
+
+    const url =
+      countryCode === 'worldwide'
+        ? 'https://disease.sh/v3/covid-19/all'
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountry(countryCode);
+        setCountryInfo(data);
+      });
   };
+
+  console.log(countryInfo);
 
   return (
     <div className="app">
