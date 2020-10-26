@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import {
@@ -12,7 +13,7 @@ import Table from './components/Table';
 import Map from './components/Map';
 import LineGraph from './components/LineGraph';
 import 'leaflet/dist/leaflet.css';
-import { sortData } from './util';
+import { sortData, prettyPrintStat } from './util';
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -88,19 +89,19 @@ function App() {
         <div className="app__stats">
           <InfoBox
             title="Coronavirus cases"
-            cases={countryInfo.todayCases}
+            cases={prettyPrintStat(countryInfo.todayCases)}
             total={countryInfo.cases}
           />
 
           <InfoBox
             title="Recovered"
-            cases={countryInfo.todayRecovered}
+            cases={prettyPrintStat(countryInfo.todayRecovered)}
             total={countryInfo.recovered}
           />
 
           <InfoBox
             title="Deaths"
-            cases={countryInfo.todayDeaths}
+            cases={prettyPrintStat(countryInfo.todayDeaths)}
             total={countryInfo.deaths}
           />
         </div>
