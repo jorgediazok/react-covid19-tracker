@@ -66,8 +66,8 @@ function App() {
         setCountryInfo(data);
         countryCode === 'worldwide'
           ? setMapCenter({ lat: 34.80746, lng: -40.4796 })
-          : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
-        setMapZoom(4);
+          : setMapCenter([data.countryInfo.lat, data.countryInfo.long]) &&
+            setMapZoom(4);
       });
   };
 
