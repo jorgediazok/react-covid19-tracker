@@ -10,19 +10,21 @@ import {
 } from '@material-ui/core';
 import InfoBox from './components/InfoBox';
 import Table from './components/Table';
-import Map from './components/Map';
 import LineGraph from './components/LineGraph';
-import 'leaflet/dist/leaflet.css';
+import numeral from 'numeral';
 import { sortData, prettyPrintStat } from './util';
+import Map from './components/Map';
+import 'leaflet/dist/leaflet.css';
 
 function App() {
-  const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState(['worldwide']);
+  const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
+  const [countries, setCountries] = useState([]);
+  const [mapCountries, setMapCountries] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [casesType, setCasesType] = useState('cases');
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
-  const [mapCountries, setMapCountries] = useState([]);
 
   useEffect(() => {
     fetch('https://disease.sh/v3/covid-19/all?yesterday=true')
@@ -41,10 +43,10 @@ function App() {
             name: country.country, //United States, United Kingdom, etc
             value: country.countryInfo.iso2, //UK, USA, FR
           }));
-          const sortedData = sortData(data);
-          setTableData(sortedData);
-          setMapCountries(data);
+          let sortedData = sortData(data);
           setCountries(countries);
+          setMapCountries(data);
+          setTableData(sortedData);
         });
     };
     getCountriesData();
@@ -56,14 +58,16 @@ function App() {
     const url =
       countryCode === 'worldwide'
         ? 'https://disease.sh/v3/covid-19/all'
-        : `https://disease.sh/v3/covid-19/countries/${countryCode}?yesterday=true&strict=true`;
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}?yesterday=true`;
 
     await fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        countryCode === 'worldwide'
+          ? setMapCenter([34.80746, -40.4796])
+          : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
         setMapZoom(4);
       });
   };
@@ -88,32 +92,45 @@ function App() {
 
         <div className="app__stats">
           <InfoBox
-            title="Coronavirus cases"
+            onClick={(e) => setCasesType('cases')}
+            title="Corona cases"
+            isRed
+            active={casesType === 'cases'}
             cases={prettyPrintStat(countryInfo.todayCases)}
-            total={countryInfo.cases}
+            total={numeral(countryInfo.cases).format('0.0a')}
           />
 
           <InfoBox
+            onClick={(e) => setCasesType('recovered')}
             title="Recovered"
+            active={casesType === 'recovered'}
             cases={prettyPrintStat(countryInfo.todayRecovered)}
-            total={countryInfo.recovered}
+            total={numeral(countryInfo.recovered).format('0.0a')}
           />
 
           <InfoBox
+            onClick={(e) => setCasesType('deaths')}
             title="Deaths"
+            isRed
+            active={casesType === 'deaths'}
             cases={prettyPrintStat(countryInfo.todayDeaths)}
-            total={countryInfo.deaths}
+            total={numeral(countryInfo.deaths).format('0.0a')}
           />
         </div>
 
-        <Map countries={mapCountries} center={mapCenter} zoom={mapZoom} />
+        <Map
+          countries={mapCountries}
+          casesType={casesType}
+          center={mapCenter}
+          zoom={mapZoom}
+        />
       </div>
       <Card className="app__right">
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={tableData} />
-          <h3>World Wide New Cases</h3>
-          <LineGraph />
+          <h3 style={{ marginTop: '30px' }}>Worldwide New Cases</h3>
+          <LineGraph casesType={casesType} />
         </CardContent>
       </Card>
     </div>
