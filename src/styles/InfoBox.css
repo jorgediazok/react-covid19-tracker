@@ -1,5 +1,6 @@
 .infoBox {
   flex: 1;
+  cursor: pointer;
 }
 
 .infoBox:not(:last-child) {
@@ -29,4 +30,20 @@
   font-weight: 800 !important;
   font-size: 0.8rem !important;
   margin-top: 15px !important;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 3px;
+    padding-right: 5px;
+  }
+  .infoBox__title {
+    text-align: center;
+  }
+  .infoBox__total {
+    text-align: center;
+  }
 }

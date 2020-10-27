@@ -11,7 +11,6 @@ import {
 import InfoBox from './components/InfoBox';
 import Table from './components/Table';
 import LineGraph from './components/LineGraph';
-import numeral from 'numeral';
 import { sortData, prettyPrintStat } from './util';
 import Map from './components/Map';
 import 'leaflet/dist/leaflet.css';
@@ -93,7 +92,7 @@ function App() {
         <div className="app__stats">
           <InfoBox
             onClick={(e) => setCasesType('cases')}
-            title="Corona cases"
+            title="Cases"
             isRed
             active={casesType === 'cases'}
             cases={prettyPrintStat(countryInfo.todayCases)}
@@ -129,7 +128,7 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
           <Table countries={tableData} />
-          <h3 style={{ marginTop: '30px' }}>Worldwide New Cases</h3>
+          <h3 style={{ marginTop: '50px' }}>Worldwide New {casesType}</h3>
           <LineGraph casesType={casesType} />
         </CardContent>
       </Card>
